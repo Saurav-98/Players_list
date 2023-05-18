@@ -1,0 +1,20 @@
+{
+  "players": [
+    {
+      "id": 3,
+      "player_name": "Virat Kohli"
+    },
+    {
+      "player_name": "Smriti Mandhana",
+      "id": 6
+    },
+    {
+      "player_name": "Shubhman Gill",
+      "id": 7
+    },
+    {
+      "player_name": "Harleen deol",
+      "id": 11
+    }
+  ]
+}

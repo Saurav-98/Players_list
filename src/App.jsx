@@ -1,46 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PlayerCreate from "./Components/PlayerCreate";
 import PlayerList from "./Components/PlayerList";
+import axios from "axios";
 
 const App = () => {
-  // const playersArray = [
-  //   { id: 1, player_name: "Shubhman Gill" },
-  //   { id: 2, player_name: "Yashasvi Jaiswal" },
-  //   { id: 3, player_name: "Virat Kohli" },
-  //   { id: 4, player_name: "Surya kumar yadav" },
-  //   { id: 5, player_name: "Cameron Green" },
-  //   { id: 6, player_name: "Riku Singh" },
-  //   { id: 7, player_name: "Rashid Khan" },
-  //   { id: 8, player_name: "Sunil Naraine" },
-  //   { id: 9, player_name: "Ishant Sharma" },
-  //   { id: 10, player_name: "Trent Boult" },
-  //   { id: 11, player_name: "Mohd Shami" },
-  // ];
-
   const [players, setPlayers] = useState([]);
 
-  const createPlayer = (player_name) => {
-    console.log("Need to add a Player : ", player_name);
-    const unId = Math.random() * player_name.length * Math.random();
-    setPlayers((prev) => [
-      ...prev,
-      {
-        id: unId,
-        player_name,
-      },
-    ]);
+  const fetchPlayers = async () => {
+    const response = await axios.get("http://localhost:3001/players");
+
+    setPlayers(response.data);
   };
-  const deletePlayerById = (id) => {
+
+  useEffect(() => {
+    fetchPlayers();
+  }, []);
+
+  // Create  a New Player
+  const createPlayer = async (player_name) => {
+    //Connecting to JSOn Server and adding Player to Players Database
+    const response = await axios.post("http://localhost:3001/players", {
+      player_name,
+    });
+
+    // Getting the New Player Data from Response
+    setPlayers((prev) => [...prev, response.data]);
+  };
+
+  const deletePlayerById = async (id) => {
+    const response = await axios.delete(`http://localhost:3001/players/${id}`);
+    console.log(response);
+
     const updatedPlayers = players.filter((player) => player.id !== id);
     setPlayers(updatedPlayers);
   };
 
-  const updatePlayerName = (newName, id) => {
+  const updatePlayerName = async (newName, id) => {
+    const response = await axios.put(`http://localhost:3001/players/${id}`, {
+      player_name: newName,
+    });
+    console.log(response);
+
     const updatedPlayers = players.map((player) =>
-      player.id === id ? { ...player, player_name: newName } : player
+      player.id === id ? { ...player, ...response.data } : player
     );
+
     setPlayers(updatedPlayers);
   };
+
   return (
     <div className="app">
       <h1>Players List</h1>
