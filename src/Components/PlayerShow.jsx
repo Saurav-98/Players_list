@@ -7,13 +7,21 @@ const PlayerShow = ({ player, onDelete, onUpdatePlayer }) => {
     onDelete(player.id);
     //
   };
+  const handleSubmit = (id, newTitle) => {
+    setShowEdit(false);
+    onUpdatePlayer(id, newTitle);
+  };
   const handleShowEdit = () => {
     setShowEdit((prev) => !prev);
   };
   return (
     <div className="book-show">
+      <img
+        src={`https://picsum.photos/seed/${player.id}/200/300`}
+        alt="players pictures"
+      />
       {showEdit ? (
-        <PlayerEdit player={player} onUpdatePlayer={onUpdatePlayer} />
+        <PlayerEdit player={player} onSubmit={handleSubmit} />
       ) : (
         player.player_name
       )}

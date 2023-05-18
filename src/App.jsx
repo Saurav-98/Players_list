@@ -42,9 +42,8 @@ const App = () => {
     setPlayers(updatedPlayers);
   };
   return (
-    <div>
-      <h4>This is App</h4>
-      <h2>{`there are ${players.length} players in the team`}</h2>
+    <div className="app">
+      <h1>Players List</h1>
       <PlayerList
         players={players}
         onDelete={deletePlayerById}
